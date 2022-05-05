@@ -1,0 +1,8 @@
+{
+  "name": "mo_less2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/VodichY/mo_less2.git",
+  "author": "VodzichY <yuri.vodich@gmail.com>",
+  "license": "MIT"
+}
