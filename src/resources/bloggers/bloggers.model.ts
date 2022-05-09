@@ -19,4 +19,4 @@ class Blogger {
   }
 }
 
-export { Blogger };
+export { Blogger, IBlogger };

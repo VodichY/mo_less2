@@ -1,6 +1,14 @@
-const DB = {
+const DB: IDB = {
 	bloggers: [],
-	posts:[]
+	posts: []
   };
+
+  interface IDB {
+	[key: string]: IObjectId[];
+  }
+
+  export interface IObjectId {
+	id: number;
+  }  
   
   export { DB };

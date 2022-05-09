@@ -1,4 +1,8 @@
 import { Request, Response, Router } from 'express';
+import { createService } from "./bloggers.service";
+import { IBlogger } from "./bloggers.model";
+
+
 const router = Router();
 
 router.route("/").get(async (req: Request, res: Response) => {
@@ -6,7 +10,16 @@ router.route("/").get(async (req: Request, res: Response) => {
 });
 
 router.route("/").post(async (req: Request, res: Response) => {
-    res.status(201).send('post blogers');
+	
+	const bloger: IBlogger =  await createService (	
+		{	
+			id: req.body.id,
+			name: req.body.name,
+			youtubeUrl: req.body.youtubeUrl			
+		  }
+	);
+
+	res.status(201).json(bloger);
 });
 
 router.route("/:id").get(async (req: Request, res: Response) => {
