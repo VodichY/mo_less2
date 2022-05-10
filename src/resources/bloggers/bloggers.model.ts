@@ -12,11 +12,16 @@ class Blogger {
 	name: string;
 	youtubeUrl: string;
 
-  constructor(blogger: IBlogger) {
+  constructor(blogger: { name: string; youtubeUrl: string }) {
     this.id = generator.uuid();
     this.name = blogger.name;
     this.youtubeUrl = blogger.youtubeUrl;
   }
+
+  static toResponse(bloger: IBlogger) {
+    const { id, name, youtubeUrl } = bloger;
+    return { id, name, youtubeUrl };
+  }
 }
 
-export { Blogger, IBlogger };
+export { IBlogger, Blogger } 

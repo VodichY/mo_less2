@@ -1,37 +1,52 @@
 import { Request, Response, Router } from 'express';
-import { createService } from "./bloggers.service";
-import { IBlogger } from "./bloggers.model";
-
+import * as bloggersService from "./bloggers.service";
+import { Blogger, IBlogger } from "./bloggers.model";
 
 const router = Router();
 
-router.route("/").get(async (req: Request, res: Response) => {
-	res.status(201).send('get blogers');
+router.route("/").get( (req: Request, res: Response) => {
+	const blogers: Array<IBlogger> = bloggersService.getBloggers();
+	res.status(201).json(blogers);
 });
 
-router.route("/").post(async (req: Request, res: Response) => {
+router.route("/").post((req: Request, res: Response) => {
 	
-	const bloger: IBlogger =  await createService (	
-		{	
-			id: req.body.id,
-			name: req.body.name,
-			youtubeUrl: req.body.youtubeUrl			
-		  }
-	);
+	const bloger: IBlogger = bloggersService.createBlogger (	
+	{	name: req.body.name,
+	 	youtubeUrl: req.body.youtubeUrl
+	});
 
-	res.status(201).json(bloger);
+	res.status(201).json(Blogger.toResponse(bloger));
 });
 
 router.route("/:id").get(async (req: Request, res: Response) => {
-	res.status(201).send('get blogers id');
+	const bloggerId: Number = +req.params.id;
+	const bloger: IBlogger | boolean = bloggersService.getBloggerById(bloggerId);
+	if (bloger) {
+		res.status(201).json(bloger);
+	} else {
+		res.status(404).send('blogger not found');	
+	}
 });
 
 router.route("/:id").put(async (req: Request, res: Response) => {
-	res.status(201).send('put blogers id');
+	const bloggerId: Number = +req.params.id;
+	const bloger: IBlogger | boolean = bloggersService.updateBloggerById(req.body, bloggerId);
+	if (bloger) {
+		res.status(201).json(bloger);
+	} else {
+		res.status(404).send('blogger not found');
+	}
 });
 
 router.route("/:id").delete(async (req: Request, res: Response) => {
-	res.status(201).send('delete blogers id');
+	const bloggerId: Number = +req.params.id;
+	const isDeleted: boolean = bloggersService.deleteBloggerById(bloggerId);
+	if (isDeleted) {
+		res.sendStatus(204);
+	} else {
+		res.status(404).send('blogger not found');
+	}
 });
 
 export { router };

@@ -1,14 +1,24 @@
-const DB: IDB = {
-	bloggers: [],
-	posts: []
-  };
 
   interface IDB {
-	[key: string]: IObjectId[];
+    bloggers: Array<IBlogger>;
+    posts: Array<IPosts>;
   }
 
-  export interface IObjectId {
+  export let dataDB1 = "1";
+
+  export const dataDB: IDB = {
+    'bloggers': [],
+    'posts': []
+    };
+
+  export interface IBlogger {
 	id: number;
+  name: string;
+  youtubeUrl: string; 
   }  
   
-  export { DB };
+  export interface IPosts {
+    id: number;
+    name: string;
+    youtubeUrl: string; 
+    }  
