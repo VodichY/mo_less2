@@ -62,7 +62,13 @@ router.route("/:id").put(async (req: Request, res: Response) => {
 
 
 router.route("/:id").delete(async (req: Request, res: Response) => {
-	res.status(201).send('delete posts id');
+	const postId: Number = +req.params.id;
+	const isDeleted: boolean =  postsService.deletePostById(postId);
+	if (isDeleted) {
+		res.sendStatus(204);
+	} else {
+		res.status(404).send('post not found');
+	}
 });
 
 export { router };
