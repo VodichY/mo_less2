@@ -6,7 +6,7 @@ const router = Router();
 
 router.route("/").get( (req: Request, res: Response) => {
 	const blogers: Array<IBlogger> = bloggersService.getBloggers();
-	res.status(201).json(blogers);
+	res.status(200).json(blogers);
 });
 
 router.route("/").post((req: Request, res: Response) => {
@@ -23,7 +23,7 @@ router.route("/:id").get(async (req: Request, res: Response) => {
 	const bloggerId: Number = +req.params.id;
 	const bloger: IBlogger | boolean = bloggersService.getBloggerById(bloggerId);
 	if (bloger) {
-		res.status(201).json(bloger);
+		res.status(200).json(bloger);
 	} else {
 		res.status(404).send('blogger not found');	
 	}
@@ -33,7 +33,7 @@ router.route("/:id").put(async (req: Request, res: Response) => {
 	const bloggerId: Number = +req.params.id;
 	const bloger: IBlogger | boolean = bloggersService.updateBloggerById(req.body, bloggerId);
 	if (bloger) {
-		res.status(201).json(bloger);
+		res.status(204).json(bloger);
 	} else {
 		res.status(404).send('blogger not found');
 	}
