@@ -29,14 +29,14 @@ router.route("/").post(async (req: Request, res: Response) => {
 		return;
 	}
 
-	const post: IPost = postsService.createPost(
+	const post = postsService.createPost(
 		{
 			title: req.body.title,
 			shortDescription: req.body.shortDescription,
 			content: req.body.content,
 			bloggerId: req.body.bloggerId
 		});
-	res.status(201).json(Post.toResponse(post));
+	res.status(201).json(post);
 });
 
 router.route("/:id").get(async (req: Request, res: Response) => {
