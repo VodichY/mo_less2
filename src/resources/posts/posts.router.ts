@@ -56,7 +56,26 @@ router.route("/:id").get(async (req: Request, res: Response) => {
 	const postId: Number = +req.params.id;
 	const post: IPost | boolean = postsService.getPostById(postId);
 	if (post) {
-		res.status(200).json(post);
+	
+		const bloggerId: Number = post.bloggerId;
+		const blogger: IBlogger | boolean = bloggersService.getBloggerById(bloggerId);
+		
+		let bloggername = "";
+		if (blogger) {
+			bloggername = blogger.name;
+		}
+		const post1 = () => {
+			return { 
+				id: post.id, 
+				title: post.title, 
+				shortDescription: post.shortDescription,
+				content: post.content, 
+				bloggerId: post.bloggerId,
+				blogerName: bloggername 
+				}
+		}
+
+		res.status(200).json(post1);
 	} else {
 		res.status(404).send('post not found');
 	}
