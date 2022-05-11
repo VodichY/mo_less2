@@ -29,14 +29,27 @@ router.route("/").post(async (req: Request, res: Response) => {
 		return;
 	}
 
-	const post = postsService.createPost(
+	const post: IPost = postsService.createPost(
 		{
 			title: req.body.title,
 			shortDescription: req.body.shortDescription,
 			content: req.body.content,
 			bloggerId: req.body.bloggerId
 		}, blogger);
-	res.status(201).json(post);
+	 
+
+	const post1 = () => {
+		return { 
+			id: post.id, 
+			title: post.title, 
+			shortDescription: post.shortDescription,
+			content: post.content, 
+			bloggerId: post.bloggerId,
+			blogerName: blogger.name 
+			}
+	}
+		
+	res.status(201).json(post1);
 });
 
 router.route("/:id").get(async (req: Request, res: Response) => {
