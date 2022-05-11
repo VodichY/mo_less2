@@ -6,46 +6,46 @@ import { IBlogger } from "../bloggers/bloggers.model";
 
 const router = Router();
 
-router.route("/").get( (req: Request, res: Response) => {
+router.route("/").get((req: Request, res: Response) => {
 	const posts: Array<IPost> = postsService.getPosts();
 	res.status(200).json(posts);
 });
 
 router.route("/").post(async (req: Request, res: Response) => {
-	const post: IPost = postsService.createPost (	
-		{	title: req.body.title, 
-			shortDescription: req.body.shortDescription, 
-			content: req.body.content, 
-			bloggerId: req.body.bloggerId
-		});
-		res.status(201).json(Post.toResponse(post));
-});
-
-router.route("/:id").get(async (req: Request, res: Response) => {
-	const postId: Number = +req.params.id;
 	const bloggerId: Number = +req.body.bloggerId;
-
 	const blogger: IBlogger | boolean = bloggersService.getBloggerById(bloggerId);
 	if (!blogger) {
 		res.status(400).json(
 			{
 				"errorsMessages": [
-				  {
-					"message": "Invalid 'bloggerId': such blogger doesn't exist",
-					"field": "bloggerId"
-				  }
+					{
+						"message": "Invalid 'bloggerId': such blogger doesn't exist",
+						"field": "bloggerId"
+					}
 				],
 				"resultCode": 1
-			  }
+			}
 		);
 		return;
 	}
 
+	const post: IPost = postsService.createPost(
+		{
+			title: req.body.title,
+			shortDescription: req.body.shortDescription,
+			content: req.body.content,
+			bloggerId: req.body.bloggerId
+		});
+	res.status(201).json(Post.toResponse(post));
+});
+
+router.route("/:id").get(async (req: Request, res: Response) => {
+	const postId: Number = +req.params.id;
 	const post: IPost | boolean = postsService.getPostById(postId);
 	if (post) {
 		res.status(200).json(post);
 	} else {
-		res.status(404).send('post not found');	
+		res.status(404).send('post not found');
 	}
 });
 
