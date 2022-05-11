@@ -1,4 +1,3 @@
-import e from "express";
 import * as db from "../../common/db";
 import { Blogger, IBlogger } from "./bloggers.model";
 

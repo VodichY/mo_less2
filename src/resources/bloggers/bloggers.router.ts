@@ -5,25 +5,25 @@ import { Blogger, IBlogger } from "./bloggers.model";
 const router = Router();
 
 router.route("/").get( (req: Request, res: Response) => {
-	const blogers: Array<IBlogger> = bloggersService.getBloggers();
-	res.status(200).json(blogers);
+	const bloggers: Array<IBlogger> = bloggersService.getBloggers();
+	res.status(200).json(bloggers);
 });
 
 router.route("/").post((req: Request, res: Response) => {
 	
-	const bloger: IBlogger = bloggersService.createBlogger (	
+	const blogger: IBlogger = bloggersService.createBlogger (	
 	{	name: req.body.name,
 	 	youtubeUrl: req.body.youtubeUrl
 	});
 
-	res.status(201).json(Blogger.toResponse(bloger));
+	res.status(201).json(Blogger.toResponse(blogger));
 });
 
 router.route("/:id").get(async (req: Request, res: Response) => {
 	const bloggerId: Number = +req.params.id;
-	const bloger: IBlogger | boolean = bloggersService.getBloggerById(bloggerId);
-	if (bloger) {
-		res.status(200).json(bloger);
+	const blogger: IBlogger | boolean = bloggersService.getBloggerById(bloggerId);
+	if (blogger) {
+		res.status(200).json(blogger);
 	} else {
 		res.status(404).send('blogger not found');	
 	}
@@ -31,9 +31,9 @@ router.route("/:id").get(async (req: Request, res: Response) => {
 
 router.route("/:id").put(async (req: Request, res: Response) => {
 	const bloggerId: Number = +req.params.id;
-	const bloger: IBlogger | boolean = bloggersService.updateBloggerById(req.body, bloggerId);
-	if (bloger) {
-		res.status(204).json(bloger);
+	const blogger: IBlogger | boolean = bloggersService.updateBloggerById(req.body, bloggerId);
+	if (blogger) {
+		res.status(204).json(blogger);
 	} else {
 		res.status(404).send('blogger not found');
 	}
