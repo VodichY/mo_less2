@@ -1,8 +1,9 @@
 import * as postsDataBase from "./posts.data.base"
 import { IPost } from "./posts.model";
+import { IBlogger } from "../bloggers/bloggers.model";
 
-const createPost = (post: { title: string; shortDescription: string; content: string; bloggerId: number; }) => {
-	const createdPost: IPost = postsDataBase.createPost(post);
+const createPost = (post: { title: string; shortDescription: string; content: string; bloggerId: number; }, blogger: IBlogger) => {
+	const createdPost: IPost = postsDataBase.createPost(post, blogger);
 	return createdPost;
 };
 

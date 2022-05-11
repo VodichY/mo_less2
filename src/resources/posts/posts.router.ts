@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
 import * as postsService from "./posts.service";
 import * as bloggersService from "../bloggers/bloggers.service";
-import { Post, IPost } from "./posts.model";
+import { IPost } from "./posts.model";
 import { IBlogger } from "../bloggers/bloggers.model";
 
 const router = Router();
@@ -35,7 +35,7 @@ router.route("/").post(async (req: Request, res: Response) => {
 			shortDescription: req.body.shortDescription,
 			content: req.body.content,
 			bloggerId: req.body.bloggerId
-		});
+		}, blogger);
 	res.status(201).json(post);
 });
 

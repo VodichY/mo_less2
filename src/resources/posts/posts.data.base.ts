@@ -1,24 +1,19 @@
 import * as db from "../../common/db";
 import { Post, IPost } from "./posts.model";
+import { IBlogger } from "../bloggers/bloggers.model";
 
 const createPost = (post: {
 	title: string;
 	shortDescription: string;
 	content: string;
 	bloggerId: number;
-}) => {
-
+}, blogger: IBlogger) => {
+	const bloggerName = blogger.name;
 	const createdPost: IPost = new Post(post);
 	db.dataDB.posts.push(createdPost);
-
-	const foundBloger = db.dataDB.bloggers.find((elem)=> elem.id === post.bloggerId);
-	let blogerName: String = "";
-	if (foundBloger) {
-		blogerName = foundBloger.name;
-	};
 	const { id, title, shortDescription, content, bloggerId } = createdPost;
 
-	return { id, title, shortDescription, content, bloggerId, blogerName};
+	return { id, title, shortDescription, content, bloggerId, bloggerName};
 };
 
 const getPosts = () => {
