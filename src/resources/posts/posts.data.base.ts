@@ -1,5 +1,6 @@
 import * as db from "../../common/db";
 import { Post, IPost } from "./posts.model";
+import { IBlogger } from "../bloggers/bloggers.model";
 
 const createPost = (post: {
 	title: string;
@@ -12,7 +13,18 @@ const createPost = (post: {
 	return createdPost;
 };
 
-const getPosts = () => db.dataDB.posts;
+const getPosts = () => {
+	return db.dataDB.posts.map((post) => {
+		const foundBloger = db.dataDB.bloggers.find((elem)=> elem.id === post.bloggerId);
+		let blogerName: String = "";
+		if (foundBloger) {
+			blogerName = foundBloger.name;
+		};
+	 	const { id, title, shortDescription, content, bloggerId } = post;
+		return { id, title, shortDescription, content, bloggerId, blogerName};
+	})	
+}
+
 
 const getPostById = (postId: Number) => {
 	const foundPost = db.dataDB.posts.find((elem) => elem.id === postId);
