@@ -7,14 +7,15 @@ const createPost = (post: {
 	content: string;
 	bloggerId: number;
 }) => {
+
 	const createdPost: IPost = new Post(post);
 	db.dataDB.posts.push(createdPost);
 
 	const foundBloger = db.dataDB.bloggers.find((elem)=> elem.id === post.bloggerId);
-		let blogerName: String = "";
-		if (foundBloger) {
-			blogerName = foundBloger.name;
-		};
+	let blogerName: String = "";
+	if (foundBloger) {
+		blogerName = foundBloger.name;
+	};
 	const { id, title, shortDescription, content, bloggerId } = createdPost;
 
 	return { id, title, shortDescription, content, bloggerId, blogerName};
