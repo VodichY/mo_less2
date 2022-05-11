@@ -1,6 +1,9 @@
 import { Request, Response, Router } from 'express';
 import * as postsService from "./posts.service";
+import * as bloggersService from "../bloggers/bloggers.service";
 import { Post, IPost } from "./posts.model";
+import { IBlogger } from "../bloggers/bloggers.model";
+
 const router = Router();
 
 router.route("/").get( (req: Request, res: Response) => {
@@ -20,6 +23,24 @@ router.route("/").post(async (req: Request, res: Response) => {
 
 router.route("/:id").get(async (req: Request, res: Response) => {
 	const postId: Number = +req.params.id;
+	const bloggerId: Number = +req.body.bloggerId;
+
+	const blogger: IBlogger | boolean = bloggersService.getBloggerById(bloggerId);
+	if (!blogger) {
+		res.status(400).json(
+			{
+				"errorsMessages": [
+				  {
+					"message": "Invalid 'bloggerId': such blogger doesn't exist",
+					"field": "bloggerId"
+				  }
+				],
+				"resultCode": 1
+			  }
+		);
+		return;
+	}
+
 	const post: IPost | boolean = postsService.getPostById(postId);
 	if (post) {
 		res.status(200).json(post);
