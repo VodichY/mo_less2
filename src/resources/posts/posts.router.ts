@@ -75,7 +75,7 @@ router.route("/:id").get(async (req: Request, res: Response) => {
 				}
 		}
 
-		res.status(200).json(post1);
+		res.status(200).json(post1());
 	} else {
 		res.status(404).send('post not found');
 	}
