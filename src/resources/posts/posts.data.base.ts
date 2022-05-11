@@ -18,4 +18,16 @@ const getPostById =  (postId: Number) => {
 	return false; 
 };
 
-export { createPost, getPosts, getPostById };
+const updatePostById =  (dataBlogger: { [key: string]: string }, postId: Number) => {
+	const foundPost = db.dataDB.posts.find((elem)=> elem.id === postId);
+	if (foundPost) {
+		foundPost.title = dataBlogger.title;
+		foundPost.shortDescription = dataBlogger.shortDescription;
+		foundPost.content = dataBlogger.content;
+		foundPost.bloggerId = +dataBlogger.bloggerId;
+		return foundPost;
+	}
+	return false; 
+};
+
+export { createPost, getPosts, getPostById, updatePostById };

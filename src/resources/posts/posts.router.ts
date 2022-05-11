@@ -49,13 +49,17 @@ router.route("/:id").get(async (req: Request, res: Response) => {
 	}
 });
 
-router.route("/:id").get(async (req: Request, res: Response) => {
-	res.status(201).send('get posts id');
-});
 
 router.route("/:id").put(async (req: Request, res: Response) => {
-	res.status(201).send('put posts id');
+	const postId: Number = +req.params.id;
+	const post: IPost | boolean = postsService.updatePostById(req.body, postId);
+	if (post) {
+		res.status(204).json(post);
+	} else {
+		res.status(404).send('post not found');
+	}
 });
+
 
 router.route("/:id").delete(async (req: Request, res: Response) => {
 	res.status(201).send('delete posts id');

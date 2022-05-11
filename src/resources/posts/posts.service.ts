@@ -10,5 +10,9 @@ const getPosts = () => postsDataBase.getPosts();
 
 const getPostById = (postId: Number) => postsDataBase.getPostById(postId);
 
-export { createPost, getPosts, getPostById };
+const updatePostById = (dataPost: { [key: string]: string }, postId: Number) => {
+	return postsDataBase.updatePostById(dataPost, postId);
+}
+
+export { createPost, getPosts, getPostById, updatePostById };
 
