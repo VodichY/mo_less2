@@ -49,7 +49,7 @@ router.route("/").post(async (req: Request, res: Response) => {
 			}
 	}
 		
-	res.status(201).json(post1);
+	res.status(201).json(post1());
 });
 
 router.route("/:id").get(async (req: Request, res: Response) => {
