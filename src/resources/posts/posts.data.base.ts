@@ -18,13 +18,13 @@ const createPost = (post: {
 
 const getPosts = () => {
 	return db.dataDB.posts.map((post) => {
-		const foundBloger = db.dataDB.bloggers.find((elem)=> elem.id === post.bloggerId);
-		let blogerName: String = "";
-		if (foundBloger) {
-			blogerName = foundBloger.name;
+		const foundBlogger = db.dataDB.bloggers.find((elem)=> elem.id === post.bloggerId);
+		let bloggerName: String = "";
+		if (foundBlogger) {
+			bloggerName = foundBlogger.name;
 		};
 	 	const { id, title, shortDescription, content, bloggerId } = post;
-		return { id, title, shortDescription, content, bloggerId, blogerName};
+		return { id, title, shortDescription, content, bloggerId, bloggerName};
 	})	
 }
 
@@ -32,13 +32,13 @@ const getPosts = () => {
 const getPostById = (postId: Number) => {
 	const foundPost = db.dataDB.posts.find((elem) => elem.id === postId);
 	if (foundPost) {
-		const foundBloger = db.dataDB.bloggers.find((elem)=> elem.id === foundPost.bloggerId);
-		let blogerName: String = "";
-		if (foundBloger) {
-			blogerName = foundBloger.name;
+		const foundBlogger = db.dataDB.bloggers.find((elem)=> elem.id === foundPost.bloggerId);
+		let bloggerName: String = "";
+		if (foundBlogger) {
+			bloggerName = foundBlogger.name;
 		};
 	 	const { id, title, shortDescription, content, bloggerId } = foundPost;
-		return { id, title, shortDescription, content, bloggerId, blogerName};
+		return { id, title, shortDescription, content, bloggerId, bloggerName};
 	}
 	return false;
 };

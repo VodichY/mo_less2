@@ -24,8 +24,8 @@ class Post {
     this.bloggerId = post.bloggerId;
   }
 
-  static toResponse(bloger: IPost) {
-    const {id, title, shortDescription, content, bloggerId } = bloger;
+  static toResponse(blogger: IPost) {
+    const {id, title, shortDescription, content, bloggerId } = blogger;
     return {id, title, shortDescription, content, bloggerId };
   }
 }
