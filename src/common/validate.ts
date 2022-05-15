@@ -3,6 +3,7 @@ import  {checkSchema, validationResult } from 'express-validator';
 
 const validatePostInputModel = checkSchema( {
 	title: {
+		trim: true,
 		notEmpty: {
 			bail: true,
 			errorMessage: 'title field is requered',
@@ -15,6 +16,7 @@ const validatePostInputModel = checkSchema( {
 
 	},
 	shortDescription: {
+		trim: true,
 		notEmpty: {
 			bail: true,
 			errorMessage: 'shortDescription field is requered',
@@ -25,6 +27,7 @@ const validatePostInputModel = checkSchema( {
 		}
 	},
 	content: {
+		trim: true,
 		notEmpty: {
 			bail: true,
 			errorMessage: 'content field is requered',
