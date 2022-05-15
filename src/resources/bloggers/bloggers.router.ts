@@ -20,7 +20,7 @@ router.route("/").post(validateBloggersInputModel, validateHandler, (req: Reques
 	res.status(201).json(Blogger.toResponse(blogger));
 });
 
-router.route("/:id").get(async (req: Request, res: Response) => {
+router.route("/:id").get((req: Request, res: Response) => {
 	const bloggerId: Number = +req.params.id;
 	const blogger: IBlogger | boolean = bloggersService.getBloggerById(bloggerId);
 	if (blogger) {
@@ -30,7 +30,7 @@ router.route("/:id").get(async (req: Request, res: Response) => {
 	}
 });
 
-router.route("/:id").put(async (req: Request, res: Response) => {
+router.route("/:id").put(validateBloggersInputModel, validateHandler, (req: Request, res: Response) => {
 	const bloggerId: Number = +req.params.id;
 	const blogger: IBlogger | boolean = bloggersService.updateBloggerById(req.body, bloggerId);
 	if (blogger) {
@@ -40,7 +40,7 @@ router.route("/:id").put(async (req: Request, res: Response) => {
 	}
 });
 
-router.route("/:id").delete(async (req: Request, res: Response) => {
+router.route("/:id").delete((req: Request, res: Response) => {
 	const bloggerId: Number = +req.params.id;
 	const isDeleted: boolean = bloggersService.deleteBloggerById(bloggerId);
 	if (isDeleted) {

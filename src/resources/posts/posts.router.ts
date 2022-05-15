@@ -42,7 +42,7 @@ router.route("/").post(validatePostInputModel, validateHandler, (req: Request, r
 	res.status(201).json(post);
 });
 
-router.route("/:id").get(async (req: Request, res: Response) => {
+router.route("/:id").get((req: Request, res: Response) => {
 	const postId: Number = +req.params.id;
 	const post: IPost | boolean = postsService.getPostById(postId);
 	if (post) {
@@ -53,7 +53,7 @@ router.route("/:id").get(async (req: Request, res: Response) => {
 });
 
 
-router.route("/:id").put(async (req: Request, res: Response) => {
+router.route("/:id").put(validatePostInputModel, validateHandler, (req: Request, res: Response) => {
 	const postId: Number = +req.params.id;
 	const post: IPost | boolean = postsService.updatePostById(req.body, postId);
 	if (post) {
@@ -64,7 +64,7 @@ router.route("/:id").put(async (req: Request, res: Response) => {
 });
 
 
-router.route("/:id").delete(async (req: Request, res: Response) => {
+router.route("/:id").delete((req: Request, res: Response) => {
 	const postId: Number = +req.params.id;
 	const isDeleted: boolean =  postsService.deletePostById(postId);
 	if (isDeleted) {
