@@ -22,10 +22,12 @@ const validateBloggersInputModel = checkSchema( {
 			errorMessage: 'shortDescription field is requered',
 		},
 		isLength: {
-			errorMessage: 'shortDescription should be not more 30 chars long',
-			options: { max: 30 }
+			bail: true,
+			errorMessage: 'shortDescription should be not more 100 chars long',
+			options: { max: 100 }
 		},
 		isURL: {
+			bail: true,
 			negated: false,
 			errorMessage: 'shortDescription should be URL',
 		}
