@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import  {checkSchema, validationResult, ErrorFormatter } from 'express-validator';
+import  {checkSchema, validationResult } from 'express-validator';
 
 const validatePostInputModel = checkSchema( {
 	title: {
 		isString: true,
+		notEmpty: true,
 		isLength: {
 			errorMessage: 'title should be not more 30 chars long',
 			options: { max: 30 }
@@ -12,6 +13,7 @@ const validatePostInputModel = checkSchema( {
 	},
 	shortDescription: {
 		isString: true,
+		notEmpty: true,
 		isLength: {
 			errorMessage: 'shortDescription should be not more 100 chars long',
 			options: { max: 100 }
@@ -19,6 +21,7 @@ const validatePostInputModel = checkSchema( {
 	},
 	content: {
 		isString: true,
+		notEmpty: true,
 		isLength: {
 			errorMessage: 'content should be not more 1000 chars long',
 			options: { max: 1000 }
