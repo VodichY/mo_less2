@@ -1,5 +1,4 @@
 import { Request, Response, Router } from 'express';
-import { body, validationResult } from 'express-validator';
 import * as postsService from "./posts.service";
 import * as bloggersService from "../bloggers/bloggers.service";
 import { IPost } from "./posts.model";
