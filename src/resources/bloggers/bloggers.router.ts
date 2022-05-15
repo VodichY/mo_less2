@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
 import * as bloggersService from "./bloggers.service";
 import { Blogger, IBlogger } from "./bloggers.model";
+import { validateBloggersInputModel, validateHandler } from "../../common/validate";
 
 const router = Router();
 
@@ -9,7 +10,7 @@ router.route("/").get( (req: Request, res: Response) => {
 	res.status(200).json(bloggers);
 });
 
-router.route("/").post((req: Request, res: Response) => {
+router.route("/").post(validateBloggersInputModel, validateHandler, (req: Request, res: Response) => {
 	
 	const blogger: IBlogger = bloggersService.createBlogger (	
 	{	name: req.body.name,

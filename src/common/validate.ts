@@ -1,6 +1,37 @@
 import { Request, Response, NextFunction } from 'express';
 import  {checkSchema, validationResult } from 'express-validator';
 
+const validateBloggersInputModel = checkSchema( {
+	name: {
+		trim: true,
+		notEmpty: {
+			bail: true,
+			errorMessage: 'name field is requered',
+		},
+		isLength: {
+			bail: true,
+			errorMessage: 'name should be not more 15 chars long',
+			options: { max: 15 }
+		}
+
+	},
+	youtubeUrl: {
+		trim: true,
+		notEmpty: {
+			bail: true,
+			errorMessage: 'shortDescription field is requered',
+		},
+		isLength: {
+			errorMessage: 'shortDescription should be not more 30 chars long',
+			options: { max: 30 }
+		},
+		isURL: {
+			negated: false,
+			errorMessage: 'shortDescription should be URL',
+		}
+	}
+});
+
 const validatePostInputModel = checkSchema( {
 	title: {
 		trim: true,
@@ -36,12 +67,8 @@ const validatePostInputModel = checkSchema( {
 			errorMessage: 'content should be not more 1000 chars long',
 			options: { max: 1000 }
 		}
-	},
-	bloggerId: {
-		isInt: true
 	}
 });
-
 
 const validateHandler = (req: Request, res: Response, next: NextFunction) => {
 	const errors = validationResult(req).formatWith(
@@ -58,4 +85,4 @@ const validateHandler = (req: Request, res: Response, next: NextFunction) => {
 }
 
 
-export { validatePostInputModel, validateHandler};
+export { validateBloggersInputModel, validatePostInputModel, validateHandler};

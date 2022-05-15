@@ -3,7 +3,7 @@ import * as postsService from "./posts.service";
 import * as bloggersService from "../bloggers/bloggers.service";
 import { IPost } from "./posts.model";
 import { IBlogger } from "../bloggers/bloggers.model";
-import { validatePostInputModel, validateHandler } from "../../common/validate"
+import { validatePostInputModel, validateHandler } from "../../common/validate";
 
 const router = Router();
 
