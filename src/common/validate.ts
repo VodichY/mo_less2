@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import  {checkSchema, validationResult } from 'express-validator';
+import  {checkSchema, validationResult, ErrorFormatter } from 'express-validator';
 
 const validatePostInputModel = checkSchema( {
 	title: {
@@ -29,13 +29,20 @@ const validatePostInputModel = checkSchema( {
 	}
 });
 
+
 const validateHandler = (req: Request, res: Response, next: NextFunction) => {
-	const errors = validationResult(req);
+	const errors = validationResult(req).formatWith(
+		({ location, msg, param, value, nestedErrors }) => {
+			return `{message: ${msg}, field: ${param}}`;
+			//{ errorsMessages: [{ message: Any<String>, field: "youtubeUrl" }, { message: Any<String>, field: "name" }], resultCode: 1 }
+		  }
+	);
 	if (!errors.isEmpty()) {
-		res.status(400).json({ errors: errors.array() });
+		res.status(400).json({ errorsMessages: errors.array(),resultCode: 1});
 	} else {
 		next();
 	};
 }
 
-export { validatePostInputModel, validateHandler };
+
+export { validatePostInputModel, validateHandler};
