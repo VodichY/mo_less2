@@ -55,6 +55,24 @@ router.route("/:id").get((req: Request, res: Response) => {
 
 router.route("/:id").put(validatePostInputModel, validateHandler, (req: Request, res: Response) => {
 	const postId: Number = +req.params.id;
+	
+	const bloggerId: Number = +req.body.bloggerId;
+	const blogger: IBlogger | boolean = bloggersService.getBloggerById(bloggerId);
+	if (!blogger) {
+		res.status(400).json(
+			{
+				"errorsMessages": [
+					{
+						"message": "Invalid 'bloggerId': such blogger doesn't exist",
+						"field": "bloggerId"
+					}
+				],
+				"resultCode": 1
+			}
+		);
+		return;
+	}
+
 	const post: IPost | boolean = postsService.updatePostById(req.body, postId);
 	if (post) {
 		res.status(204).json(post);
