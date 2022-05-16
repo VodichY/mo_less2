@@ -4,7 +4,7 @@ import { decode } from 'js-base64';
 const checkAuthorization = (req: Request, res: Response, next: NextFunction) => {
 	const bearerHeader = req.header('Authorization') || "";
 	const decodePassord = decode(bearerHeader.slice(6));
-	if (decodePassord && decodePassord.split(':')[0] === "admin" && decodePassord.split(':')[1] === "qwerty") {
+	if (bearerHeader.split(' ')[0] === "Basic" && decodePassord && decodePassord.split(':')[0] === "admin" && decodePassord.split(':')[1] === "qwerty") {
 		next();
 	} else {
 		res.status(401).send('Unauthorized');
