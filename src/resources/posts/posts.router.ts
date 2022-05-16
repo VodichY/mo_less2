@@ -83,7 +83,7 @@ router.route("/:id").put(checkAuthorization, validatePostInputModel, validateHan
 });
 
 
-router.route("/:id").delete((req: Request, res: Response) => {
+router.route("/:id").delete(checkAuthorization, (req: Request, res: Response) => {
 	const postId: Number = +req.params.id;
 	const isDeleted: boolean =  postsService.deletePostById(postId);
 	if (isDeleted) {

@@ -41,7 +41,7 @@ router.route("/:id").put(checkAuthorization, validateBloggersInputModel, validat
 	}
 });
 
-router.route("/:id").delete((req: Request, res: Response) => {
+router.route("/:id").delete(checkAuthorization, (req: Request, res: Response) => {
 	const bloggerId: Number = +req.params.id;
 	const isDeleted: boolean = bloggersService.deleteBloggerById(bloggerId);
 	if (isDeleted) {
