@@ -8,7 +8,7 @@ const checkAuthorization = (req: Request, res: Response, next: NextFunction) => 
 		next();
 	} else {
 		res.status(401).send('Unauthorized');
-	};
+	}; 
 }
 
 export { checkAuthorization };
