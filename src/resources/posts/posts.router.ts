@@ -4,6 +4,7 @@ import * as bloggersService from "../bloggers/bloggers.service";
 import { IPost } from "./posts.model";
 import { IBlogger } from "../bloggers/bloggers.model";
 import { validatePostInputModel, validateHandler } from "../../common/validate";
+import { checkAuthorization } from "../../common/authorization";
 
 const router = Router();
 
@@ -12,7 +13,7 @@ router.route("/").get((req: Request, res: Response) => {
 	res.status(200).json(posts);
 });
 
-router.route("/").post(validatePostInputModel, validateHandler, (req: Request, res: Response) => {
+router.route("/").post(checkAuthorization, validatePostInputModel, validateHandler, (req: Request, res: Response) => {
 
 	const bloggerId: Number = +req.body.bloggerId;
 	const blogger: IBlogger | boolean = bloggersService.getBloggerById(bloggerId);
@@ -53,7 +54,7 @@ router.route("/:id").get((req: Request, res: Response) => {
 });
 
 
-router.route("/:id").put(validatePostInputModel, validateHandler, (req: Request, res: Response) => {
+router.route("/:id").put(checkAuthorization, validatePostInputModel, validateHandler, (req: Request, res: Response) => {
 	const postId: Number = +req.params.id;
 	
 	const bloggerId: Number = +req.body.bloggerId;
