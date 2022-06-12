@@ -8,15 +8,15 @@ import { checkAuthorization } from "../../common/authorization";
 
 const router = Router();
 
-router.route("/").get((req: Request, res: Response) => {
-	const posts: Array<IPost> = postsService.getPosts();
+router.route("/").get(async (req: Request, res: Response) => {
+	const posts: Array<IPost> = await postsService.getPosts();
 	res.status(200).json(posts);
 });
 
-router.route("/").post(checkAuthorization, validatePostInputModel, validateHandler, (req: Request, res: Response) => {
+router.route("/").post(checkAuthorization, validatePostInputModel, validateHandler, async (req: Request, res: Response) => {
 
 	const bloggerId: Number = +req.body.bloggerId;
-	const blogger: IBlogger | boolean = bloggersService.getBloggerById(bloggerId);
+	const blogger: IBlogger | boolean = await bloggersService.getBloggerById(bloggerId);
 	if (!blogger) {
 		res.status(400).json(
 			{
@@ -32,7 +32,7 @@ router.route("/").post(checkAuthorization, validatePostInputModel, validateHandl
 		return;
 	}
 
-	const post: IPost = postsService.createPost(
+	const post: IPost = await postsService.createPost(
 		{
 			title: req.body.title,
 			shortDescription: req.body.shortDescription,
@@ -43,9 +43,9 @@ router.route("/").post(checkAuthorization, validatePostInputModel, validateHandl
 	res.status(201).json(post);
 });
 
-router.route("/:id").get((req: Request, res: Response) => {
+router.route("/:id").get( async (req: Request, res: Response) => {
 	const postId: Number = +req.params.id;
-	const post: IPost | boolean = postsService.getPostById(postId);
+	const post: IPost | boolean = await postsService.getPostById(postId);
 	if (post) {
 		res.status(200).json(post);
 	} else {
@@ -54,11 +54,11 @@ router.route("/:id").get((req: Request, res: Response) => {
 });
 
 
-router.route("/:id").put(checkAuthorization, validatePostInputModel, validateHandler, (req: Request, res: Response) => {
+router.route("/:id").put(checkAuthorization, validatePostInputModel, validateHandler, async (req: Request, res: Response) => {
 	const postId: Number = +req.params.id;
 	
 	const bloggerId: Number = +req.body.bloggerId;
-	const blogger: IBlogger | boolean = bloggersService.getBloggerById(bloggerId);
+	const blogger: IBlogger | boolean = await bloggersService.getBloggerById(bloggerId);
 	if (!blogger) {
 		res.status(400).json(
 			{
@@ -74,7 +74,7 @@ router.route("/:id").put(checkAuthorization, validatePostInputModel, validateHan
 		return;
 	}
 
-	const post: IPost | boolean = postsService.updatePostById(req.body, postId);
+	const post: IPost | boolean = await postsService.updatePostById(req.body, postId);
 	if (post) {
 		res.status(204).json(post);
 	} else {
@@ -83,9 +83,9 @@ router.route("/:id").put(checkAuthorization, validatePostInputModel, validateHan
 });
 
 
-router.route("/:id").delete(checkAuthorization, (req: Request, res: Response) => {
+router.route("/:id").delete(checkAuthorization, async (req: Request, res: Response) => {
 	const postId: Number = +req.params.id;
-	const isDeleted: boolean =  postsService.deletePostById(postId);
+	const isDeleted: boolean =  await postsService.deletePostById(postId);
 	if (isDeleted) {
 		res.sendStatus(204);
 	} else {
