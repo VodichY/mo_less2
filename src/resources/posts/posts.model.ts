@@ -1,8 +1,7 @@
-import uuid  from "uuid-int";
-const generator = uuid(0);
+import { ObjectId } from "mongodb";
 
 interface IPost {
-  id: number;
+  _id?: ObjectId;
   title: string;
   shortDescription: string;
   content: string;
@@ -10,14 +9,13 @@ interface IPost {
 }
 
 class Post {
-  id: number;
+  _id?: ObjectId;
 	title: string;
 	shortDescription: string;
 	content: string;
   bloggerId: number;
 
-  constructor(post: { title: string; shortDescription: string; content: string; bloggerId: number;}) {
-    this.id = generator.uuid();
+  constructor(post: IPost) {
     this.title = post.title; 
     this.shortDescription = post.shortDescription;
     this.content = post.content;
@@ -25,8 +23,8 @@ class Post {
   }
 
   static toResponse(blogger: IPost) {
-    const {id, title, shortDescription, content, bloggerId } = blogger;
-    return {id, title, shortDescription, content, bloggerId };
+    const {_id, title, shortDescription, content, bloggerId } = blogger;
+    return {id: _id, title, shortDescription, content, bloggerId };
   }
 }
 

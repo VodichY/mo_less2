@@ -1,7 +1,19 @@
 import { app } from './app';
+import { MongoClient, ConnectOptions } from 'mongodb';
+import { configApp } from './common/config';
 
-const PORT = process.env.PORT || 5000
+const PORT = configApp.PORT || 5000
+const uri = configApp.MONGO_CONNECTION || "";
+const clientMongoDb = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true } as ConnectOptions);
 
-app.listen(PORT, () => {
-    console.log(`Example app listening on port ${PORT}`)
-})
+
+clientMongoDb.connect();
+clientMongoDb.on('error', console.error.bind(console, 'Connection error:'));
+clientMongoDb.once('open', function() {
+  console.log('Connected to DB successfully!');
+  app.listen(PORT, () =>
+    console.log(`App is running on http://localhost:${PORT}`)
+  );
+});
+
+export { clientMongoDb }

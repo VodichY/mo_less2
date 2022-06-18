@@ -1,20 +1,27 @@
-import * as bloggersDataBase from "./bloggers.data.base"
+import * as bloggersDataBase from "./bloggers.data.base.mongodb"
 import { IBlogger } from "./bloggers.model";
 
-const createBlogger =  (blogger :  {name: string; youtubeUrl: string }) => {
-	const createdBlogger: IBlogger =  bloggersDataBase.createBlogger(blogger);
-	return createdBlogger;
+const createBlogger =  async (blogger: IBlogger) => {
+	const createdBlogger: IBlogger = await bloggersDataBase.createBlogger(blogger);
+	return createdBlogger;//createdBlogger;
 };
 
-const getBloggers = () => bloggersDataBase.getBloggers();
-
-const getBloggerById = (bloggerId: Number) => bloggersDataBase.getBloggerById(bloggerId);
-
-const updateBloggerById = (dataBlogger: { [key: string]: string }, bloggerId: Number) => {
-	return bloggersDataBase.updateBloggerById(dataBlogger, bloggerId);
+const getBloggers = async () => {
+	return await bloggersDataBase.getBloggers();
 }
 
-const deleteBloggerById = (bloggerId: Number) => bloggersDataBase.deleteBloggerById(bloggerId);
+ const getBloggerById = async (bloggerId: string) => {
+	return await bloggersDataBase.getBloggerById(bloggerId);
+ };
+
+const updateBloggerById = async (blogger: IBlogger, bloggerId: string) => {
+	return await bloggersDataBase.updateBloggerById(blogger, bloggerId);
+}
+
+const deleteBloggerById = async (bloggerId: string) => {
+	return await bloggersDataBase.deleteBloggerById(bloggerId);
+}
+
 
 export { 
 	createBlogger, 

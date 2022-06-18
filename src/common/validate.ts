@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import  {checkSchema, validationResult } from 'express-validator';
+import { ObjectId } from "mongodb";
 
 const validateBloggersInputModel = checkSchema( {
 	name: {
@@ -86,5 +87,15 @@ const validateHandler = (req: Request, res: Response, next: NextFunction) => {
 	};
 }
 
+const validateBloggersParams = (req: Request, res: Response, next: NextFunction) => {
+	const bloggerId: string = req.params.id;
+	const result = ObjectId.isValid(bloggerId);
+	if (!result) {
+		res.status(400).json({ errorsMessages: [{message:"value must be a string of 12 bytes or a string of 24 hex characters or an integer", field: "id"}],resultCode: 1});
+	} else {
+		next();
+	};
+}
 
-export { validateBloggersInputModel, validatePostInputModel, validateHandler};
+
+export { validateBloggersInputModel, validatePostInputModel, validateHandler, validateBloggersParams};

@@ -1,4 +1,4 @@
-import * as postsDataBase from "./posts.data.base"
+import * as postsDataBase from "./posts.data.base.mongodb"
 import { IPost } from "./posts.model";
 import { IBlogger } from "../bloggers/bloggers.model";
 
@@ -9,7 +9,10 @@ const createPost = (post: { title: string; shortDescription: string; content: st
 
 const getPosts = () => postsDataBase.getPosts();
 
-const getPostById = (postId: Number) => postsDataBase.getPostById(postId);
+const getPostById = async (postId: string) => {
+	return await postsDataBase.getPostById(postId);
+} 
+
 
 const updatePostById = (dataPost: { [key: string]: string }, postId: Number) => {
 	return postsDataBase.updatePostById(dataPost, postId);
