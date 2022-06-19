@@ -1,4 +1,3 @@
-//import * as db from "../../common/db";
 import { Blogger, IBlogger} from "./bloggers.model";
 import { clientMongoDb } from "../../server";
 

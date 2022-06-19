@@ -1,12 +1,13 @@
 import { Request, Response, Router } from 'express';
 import * as bloggersService from "./bloggers.service";
 import { Blogger } from "./bloggers.model";
-import { validateBloggersInputModel, validateHandler, validateBloggersParams } from "../../common/validate";
+import { validateBloggersInputModel, validateHandler } from "../../common/validate";
 import { checkAuthorization } from "../../common/authorization";
 
 const router = Router();
 
 router.route("/").get(async (req: Request, res: Response) => {
+	const { SearchNameTerm, PageNumber, PageSize } = req.query;
 	const bloggers = await bloggersService.getBloggers();
 	res.status(200).json(bloggers.map((elem) => Blogger.toResponse(elem)));
 });

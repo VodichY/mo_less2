@@ -1,8 +1,6 @@
-import * as db from "../../common/db";
 import { Post, IPost } from "./posts.model";
 import { IBlogger } from "../bloggers/bloggers.model";
 import { clientMongoDb } from "../../server";
-import { ObjectId } from "mongodb";
 
 const createPost = async (post: IPost, blogger: IBlogger) => {
 	post.bloggerName = blogger.name;
