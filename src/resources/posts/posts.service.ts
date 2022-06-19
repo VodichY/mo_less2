@@ -2,23 +2,27 @@ import * as postsDataBase from "./posts.data.base.mongodb"
 import { IPost } from "./posts.model";
 import { IBlogger } from "../bloggers/bloggers.model";
 
-const createPost = (post: { title: string; shortDescription: string; content: string; bloggerId: number; }, blogger: IBlogger) => {
-	const createdPost: IPost = postsDataBase.createPost(post, blogger);
-	return createdPost;
+const createPost = async (post: IPost, blogger: IBlogger) => {
+	return await postsDataBase.createPost(post, blogger);
 };
 
-const getPosts = () => postsDataBase.getPosts();
-
-const getPostById = async (postId: string) => {
-	return await postsDataBase.getPostById(postId);
-} 
-
-
-const updatePostById = (dataPost: { [key: string]: string }, postId: Number) => {
-	return postsDataBase.updatePostById(dataPost, postId);
+const getPosts = async () => {
+	return await postsDataBase.getPosts();
 }
 
-const deletePostById = (postId: Number) => postsDataBase.deletePostById(postId);
+const getPostById = async (postId: number) => {
+	return await postsDataBase.getPostById(postId);
+}
+
+
+const updatePostById = async (post: IPost, postId: number) => {
+	return await postsDataBase.updatePostById(post, postId);
+}
+
+const deletePostById = async (postId: number) => {
+	return await postsDataBase.deletePostById(postId);
+}
+
 
 export {
 	createPost,

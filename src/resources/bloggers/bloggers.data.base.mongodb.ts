@@ -1,22 +1,19 @@
 //import * as db from "../../common/db";
 import { Blogger, IBlogger} from "./bloggers.model";
 import { clientMongoDb } from "../../server";
-import { ObjectId } from "mongodb";
-
-
 
 const createBlogger =  async (blogger:  IBlogger) => {
-	const createdBlogger:IBlogger = new Blogger(blogger);
+	const createdBlogger = new Blogger(blogger);
 	const database = clientMongoDb.db('mo_less2');
 	const bloggersCollection = database.collection('bloggers');
   	const cursor = await bloggersCollection.insertOne(createdBlogger);
 	return createdBlogger;
 };
 
-const getBloggerById =  async (bloggerId: string) => {
+const getBloggerById =  async (bloggerId: number) => {
 	const database = clientMongoDb.db('mo_less2');
 	const bloggersCollection = database.collection('bloggers');
-	const query = { _id: new ObjectId(bloggerId) };
+	const query = { id: bloggerId };
 	const options = {};
   	const blogger = await bloggersCollection.findOne(query, options) as IBlogger;
 	  if (blogger) {
@@ -25,27 +22,26 @@ const getBloggerById =  async (bloggerId: string) => {
 	return false;
 };
 
-const updateBloggerById =  async (blogger: IBlogger, bloggerId: string) => {
+const updateBloggerById =  async (blogger: IBlogger, bloggerId: number) => {
  
 	const dataBase = clientMongoDb.db("mo_less2");
 	const bloggersCollection = dataBase.collection("bloggers");
   
-	const query = { _id: new ObjectId(bloggerId) };
+	const query = { id: bloggerId };
 	const options = { upsert: false };
 	const updateDoc = { $set: blogger };
   
 	const cursor = await bloggersCollection.updateOne(query, updateDoc, options);
 	if (cursor.modifiedCount) {
-		blogger._id = query._id; 
 		return blogger;
 	}
 	return false;
 };
 
-const deleteBloggerById =  async (bloggerId: string) => {
+const deleteBloggerById =  async (bloggerId: number) => {
 	const database = clientMongoDb.db('mo_less2');
 	const bloggersCollection = database.collection('bloggers');
-	const query = { _id: new ObjectId(bloggerId) };
+	const query = { id: bloggerId };
 	const options = {};
   	const cursor = await bloggersCollection.deleteOne(query, options);
 	  if (cursor.deletedCount) {

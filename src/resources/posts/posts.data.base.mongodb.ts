@@ -4,78 +4,59 @@ import { IBlogger } from "../bloggers/bloggers.model";
 import { clientMongoDb } from "../../server";
 import { ObjectId } from "mongodb";
 
-const createPost = (post: {
-	title: string;
-	shortDescription: string;
-	content: string;
-	bloggerId: number;
-}, blogger: IBlogger) => {
-	const bloggerName = blogger.name;
-	const createdPost: IPost = new Post(post);
-	db.dataDB.posts.push(createdPost);
-	const { id, title, shortDescription, content, bloggerId } = createdPost;
-
-	return { id, title, shortDescription, content, bloggerId, bloggerName};
+const createPost = async (post: IPost, blogger: IBlogger) => {
+	post.bloggerName = blogger.name;
+	const createdPost: IPost = new Post(post);	
+	const database = clientMongoDb.db('mo_less2');
+	const postsCollection = database.collection('posts');
+	const cursor = await postsCollection.insertOne(createdPost);
+	return createdPost;
 };
 
-const getPosts = () => {
-	return db.dataDB.posts.map((post) => {
-		const foundBlogger = db.dataDB.bloggers.find((elem)=> elem.id === post.bloggerId);
-		let bloggerName: String = "";
-		if (foundBlogger) {
-			bloggerName = foundBlogger.name;
-		};
-	 	const { id, title, shortDescription, content, bloggerId } = post;
-		return { id, title, shortDescription, content, bloggerId, bloggerName};
-	})	
+const getPosts = async () => {
+	const database = clientMongoDb.db('mo_less2');
+	const postsCollection = database.collection('posts');
+	const query = {};
+	const postsCursor = await postsCollection.find(query);
+	const posts = postsCursor.toArray() as Promise<IPost[]>;
+	return posts;
 }
 
 
-const getPostById = async (postId: string) => {
-
+const getPostById = async (postId: number) => {
 	const database = clientMongoDb.db('mo_less2');
 	const postsCollection = database.collection('posts');
-	const query = { _id: new ObjectId(postId) };
+	const query = { id: postId };
 	const options = {};
   	const post = await postsCollection.findOne(query, options) as IPost;
 	  if (post) {
 		return post;
 	}
 	return false;
-
-	// const foundPost = db.dataDB.posts.find((elem) => elem.id === postId);
-	// if (foundPost) {
-	// 	const foundBlogger = db.dataDB.bloggers.find((elem)=> elem.id === foundPost.bloggerId);
-	// 	let bloggerName: String = "";
-	// 	if (foundBlogger) {
-	// 		bloggerName = foundBlogger.name;
-	// 	};
-	//  	const { id, title, shortDescription, content, bloggerId } = foundPost;
-	// 	return { id, title, shortDescription, content, bloggerId, bloggerName};
-	// }
-	// return false;
 };
 
-const updatePostById = (
-	dataBlogger: { [key: string]: string },
-	postId: Number
-) => {
-	const foundPost = db.dataDB.posts.find((elem) => elem.id === postId);
-	if (foundPost) {
-		foundPost.title = dataBlogger.title;
-		foundPost.shortDescription = dataBlogger.shortDescription;
-		foundPost.content = dataBlogger.content;
-		foundPost.bloggerId = +dataBlogger.bloggerId;
-		return foundPost;
+const updatePostById = async ( post: IPost, postId: number ) => {
+	const dataBase = clientMongoDb.db("mo_less2");
+	const postsCollection = dataBase.collection("posts");
+  
+	const query = { id: postId };
+	const options = { upsert: false };
+	const updateDoc = { $set: post };
+  
+	const cursor = await postsCollection.updateOne(query, updateDoc, options);
+	if (cursor.modifiedCount) {
+		return post;
 	}
 	return false;
 };
 
-const deletePostById = (postId: Number) => {
-	const foundPost = db.dataDB.posts.find((elem) => elem.id === postId);
-	if (foundPost) {
-		const postIndex = db.dataDB.posts.indexOf(foundPost);
-		db.dataDB.posts.splice(postIndex, 1);
+const deletePostById = async (postId: number) => {
+	const database = clientMongoDb.db('mo_less2');
+	const postsCollection = database.collection('posts');
+	const query = { id: postId };
+	const options = {};
+  	const cursor = await postsCollection.deleteOne(query, options);
+	  if (cursor.deletedCount) {
 		return true;
 	}
 	return false;
