@@ -9,8 +9,10 @@ const clientMongoDb = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTo
 
 clientMongoDb.connect();
 clientMongoDb.on('error', console.error.bind(console, 'Connection error:'));
-clientMongoDb.once('open', function() {
+clientMongoDb.once('open', async function() {
   console.log('Connected to DB successfully!');
+  await clientMongoDb.db('mo_less2').collection('bloggers').drop();
+  await clientMongoDb.db('mo_less2').collection('posts').drop();
   app.listen(PORT, () =>
     console.log(`App is running on http://localhost:${PORT}`)
   );

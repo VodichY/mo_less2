@@ -10,7 +10,6 @@ router.route("/").get(async (req: Request, res: Response) => {
 	const { SearchNameTerm, PageNumber, PageSize } = req.query;
 	const result = await bloggersService.getBloggers({ SearchNameTerm, PageNumber, PageSize } as {[key: string]: string});
 	res.status(200).json(Blogger.pagination(result));
-	//res.status(200).json(result.bloggers.map((elem) => Blogger.toResponse(elem)));
 });
 
 router.route("/").post(checkAuthorization, validateBloggersInputModel, validateHandler, async (req: Request, res: Response) => {
