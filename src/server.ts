@@ -11,8 +11,8 @@ clientMongoDb.connect();
 clientMongoDb.on('error', console.error.bind(console, 'Connection error:'));
 clientMongoDb.once('open', async function() {
   console.log('Connected to DB successfully!');
-  await clientMongoDb.db('mo_less2').collection('bloggers').drop();
-  await clientMongoDb.db('mo_less2').collection('posts').drop();
+  await clientMongoDb.db('mo_less2').collection('bloggers').deleteMany({});
+  await clientMongoDb.db('mo_less2').collection('posts').deleteMany({});
   app.listen(PORT, () =>
     console.log(`App is running on http://localhost:${PORT}`)
   );
