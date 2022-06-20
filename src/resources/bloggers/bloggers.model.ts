@@ -25,6 +25,16 @@ class Blogger {
     const { id, name, youtubeUrl } = bloger;
     return { id, name, youtubeUrl };
   }
+
+  static pagination(result: { bloggers: IBlogger[]; bloggersCount: number; pagesCount: number; pageNumber: number; pageSize: number  }) {
+    return {
+      pagesCount: result.pagesCount,
+      page: result.pageNumber,
+      pageSize: result.pageSize, 
+      totalCount: result.bloggersCount, 
+      items: result.bloggers.map((elem) => Blogger.toResponse(elem))
+    }
+  }
 }
 
 export { IBlogger, Blogger } 

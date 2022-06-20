@@ -50,13 +50,17 @@ const deleteBloggerById =  async (bloggerId: number) => {
 };
 
 
-const getBloggers = async () => {
+const getBloggers = async (params: {[key: string]: string}) => {
+	const searchNameTerm = params.SearchNameTerm || "";
+	const pageNumber = +params.PageNumber || 1;
+	const pageSize = +params.PageSize || 10;
 	const database = clientMongoDb.db('mo_less2');
 	const bloggersCollection = database.collection('bloggers');
-	const query = {};
-	const bloggersCursor = await bloggersCollection.find(query);
-	const bloggers = bloggersCursor.toArray() as Promise<IBlogger[]>;
-	return bloggers;
+	const query = { name: { $regex: searchNameTerm } };
+	const bloggers = await bloggersCollection.find(query).sort({ _id: -1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray() as IBlogger[];
+	const bloggersCount = await bloggersCollection.countDocuments(query);
+	const pagesCount = Math.ceil(bloggersCount / pageSize);
+	return { bloggers , bloggersCount, pagesCount, pageNumber, pageSize };
 };
 
 

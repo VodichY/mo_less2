@@ -5,8 +5,8 @@ const createBlogger =  async (blogger: IBlogger) => {
 	return await bloggersDataBase.createBlogger(blogger);
 };
 
-const getBloggers = async () => {
-	return await bloggersDataBase.getBloggers();
+const getBloggers = async (params: {[key: string]: string}) => {
+	return await bloggersDataBase.getBloggers(params);
 }
 
  const getBloggerById = async (bloggerId: number) => {
