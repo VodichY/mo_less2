@@ -56,7 +56,7 @@ const getBloggers = async (params: {[key: string]: string}) => {
 	const database = clientMongoDb.db('mo_less2');
 	const bloggersCollection = database.collection('bloggers');
 	const query = { name: { $regex: searchNameTerm } };
-	const bloggers = await bloggersCollection.find(query).sort({ _id: -1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray() as IBlogger[];
+	const bloggers = await bloggersCollection.find(query).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray() as IBlogger[];
 	const bloggersCount = await bloggersCollection.countDocuments(query);
 	const pagesCount = Math.ceil(bloggersCount / pageSize);
 	return { bloggers , bloggersCount, pagesCount, pageNumber, pageSize };
