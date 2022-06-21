@@ -1,15 +1,16 @@
 import { Request, Response, Router } from 'express';
 import * as postsService from "./posts.service";
 import * as bloggersService from "../bloggers/bloggers.service";
-import {  Post } from "./posts.model";
+import { Post } from "./posts.model";
 import { validatePostInputModel, validateHandler } from "../../common/validate";
 import { checkAuthorization } from "../../common/authorization";
 
 const router = Router();
 
 router.route("/").get(async (req: Request, res: Response) => {
-	const posts = await postsService.getPosts();
-	res.status(200).json(posts.map((elem) => Post.toResponse(elem)));
+	const { SearchNameTerm, PageNumber, PageSize } = req.query;
+	const result = await postsService.getPosts({ SearchNameTerm, PageNumber, PageSize } as { [key: string]: string });
+	res.status(200).json(Post.pagination(result));
 });
 
 router.route("/").post(checkAuthorization, validatePostInputModel, validateHandler, async (req: Request, res: Response) => {

@@ -35,6 +35,16 @@ class Post {
     const {id, title, shortDescription, content, bloggerId , bloggerName} = post;
     return {id, title, shortDescription, content, bloggerId, bloggerName};
   }
+
+  static pagination(result: { posts: IPost[]; postsCount: number; pagesCount: number; pageNumber: number; pageSize: number  }) {
+    return {
+      pagesCount: result.pagesCount,
+      page: result.pageNumber,
+      pageSize: result.pageSize, 
+      totalCount: result.postsCount, 
+      items: result.posts.map((elem) => Post.toResponse(elem))
+    }
+  }
 }
 
 export { IPost, Post } 

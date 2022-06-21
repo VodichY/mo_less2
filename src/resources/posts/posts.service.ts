@@ -6,8 +6,8 @@ const createPost = async (post: IPost, blogger: IBlogger) => {
 	return await postsDataBase.createPost(post, blogger);
 };
 
-const getPosts = async () => {
-	return await postsDataBase.getPosts();
+const getPosts = async (params: {[key: string]: string}) => {
+	return await postsDataBase.getPosts(params);
 }
 
 const getPostById = async (postId: number) => {
