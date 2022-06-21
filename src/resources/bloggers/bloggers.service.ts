@@ -21,7 +21,6 @@ const deleteBloggerById = async (bloggerId: number) => {
 	return await bloggersDataBase.deleteBloggerById(bloggerId);
 }
 
-
 export { 
 	createBlogger, 
 	getBloggers, 

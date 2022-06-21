@@ -8,12 +8,12 @@ const router = Router();
 
 router.route("/").get(async (req: Request, res: Response) => {
 	const { SearchNameTerm, PageNumber, PageSize } = req.query;
-	const result = await bloggersService.getBloggers({ SearchNameTerm, PageNumber, PageSize } as {[key: string]: string});
+	const result = await bloggersService.getBloggers({ SearchNameTerm, PageNumber, PageSize } as { [key: string]: string });
 	res.status(200).json(Blogger.pagination(result));
 });
 
 router.route("/").post(checkAuthorization, validateBloggersInputModel, validateHandler, async (req: Request, res: Response) => {
-	const { name, youtubeUrl } =  req.body;
+	const { name, youtubeUrl } = req.body;
 	const blogger = await bloggersService.createBlogger({ name, youtubeUrl });
 	res.status(201).json(Blogger.toResponse(blogger));
 });
@@ -30,8 +30,8 @@ router.route("/:id").get(async (req: Request, res: Response) => {
 
 router.route("/:id").put(checkAuthorization, validateBloggersInputModel, validateHandler, async (req: Request, res: Response) => {
 	const bloggerId: number = +req.params.id;
-	const { name, youtubeUrl } =  req.body;
-	const blogger = await bloggersService.updateBloggerById({ name, youtubeUrl }, bloggerId); 
+	const { name, youtubeUrl } = req.body;
+	const blogger = await bloggersService.updateBloggerById({ name, youtubeUrl }, bloggerId);
 	if (blogger) {
 		res.sendStatus(204);
 	} else {
