@@ -49,7 +49,6 @@ const deleteBloggerById =  async (bloggerId: number) => {
 	return false;
 };
 
-
 const getBloggers = async (params: {[key: string]: string}) => {
 	const searchNameTerm = params.SearchNameTerm || "";
 	const pageNumber = +params.PageNumber || 1;
@@ -62,7 +61,6 @@ const getBloggers = async (params: {[key: string]: string}) => {
 	const pagesCount = Math.ceil(bloggersCount / pageSize);
 	return { bloggers , bloggersCount, pagesCount, pageNumber, pageSize };
 };
-
 
 export { 
 	createBlogger, 
