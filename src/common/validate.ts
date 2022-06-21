@@ -76,12 +76,12 @@ const validatePostInputModel = checkSchema( {
 const validateHandler = (req: Request, res: Response, next: NextFunction) => {
 	const errors = validationResult(req).formatWith(
 		({ location, msg, param, value, nestedErrors }) => {
-			return {message: msg, field: param};
+			return { message: msg, field: param };
 			//{ errorsMessages: [{ message: Any<String>, field: "youtubeUrl" }, { message: Any<String>, field: "name" }], resultCode: 1 }
 		  }
 	);
 	if (!errors.isEmpty()) {
-		res.status(400).json({ errorsMessages: errors.array(),resultCode: 1});
+		res.status(400).json({ errorsMessages: errors.array(), resultCode: 1});
 	} else {
 		next();
 	};

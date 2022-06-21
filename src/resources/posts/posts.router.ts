@@ -20,13 +20,13 @@ router.route("/").post(checkAuthorization, validatePostInputModel, validateHandl
 	if (!blogger) {
 		res.status(400).json(
 			{
-				"errorsMessages": [
+				errorsMessages: [
 					{
-						"message": "Invalid 'bloggerId': such blogger doesn't exist",
-						"field": "bloggerId"
+						message: "Invalid 'bloggerId': such blogger doesn't exist",
+						field: "bloggerId"
 					}
 				],
-				"resultCode": 1
+				resultCode: 1
 			}
 		);
 		return;
