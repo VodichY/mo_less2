@@ -33,6 +33,13 @@ router.route("/:id").get(async (req: Request, res: Response) => {
 router.route("/:id/posts").get(async (req: Request, res: Response) => {
 	const { PageNumber, PageSize } = req.query;
 	const bloggerId = req.params.id;
+	
+	const blogger = await bloggersService.getBloggerById(+bloggerId);
+	if (!blogger) {
+		res.status(404).send('blogger not found');
+		return;
+	}
+
 	const result = await postsService.getPostByBloggerId({ bloggerId, PageNumber, PageSize } as { [key: string]: string });
 	res.status(200).json(Post.pagination(result)); 
 });
