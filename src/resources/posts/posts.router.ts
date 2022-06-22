@@ -25,8 +25,7 @@ router.route("/").post(checkAuthorization, validatePostInputModel, validateHandl
 						message: "Invalid 'bloggerId': such blogger doesn't exist",
 						field: "bloggerId"
 					}
-				],
-				resultCode: 1
+				]
 			}
 		);
 		return;
@@ -65,8 +64,7 @@ router.route("/:id").put(checkAuthorization, validatePostInputModel, validateHan
 						"message": "Invalid 'bloggerId': such blogger doesn't exist",
 						"field": "bloggerId"
 					}
-				],
-				"resultCode": 1
+				]
 			}
 		);
 		return;
