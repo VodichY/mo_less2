@@ -35,7 +35,7 @@ router.route("/:id/posts").get(async (req: Request, res: Response) => {
 	const bloggerId = req.params.id;
 	const blogger = await bloggersService.getBloggerById(+bloggerId);
 	if (!blogger) {
-		res.status(400).json(
+		res.status(404).json(
 			{
 				errorsMessages: [
 					{
@@ -56,7 +56,7 @@ router.route("/:id/posts").post(checkAuthorization, validatePostInputModel, vali
 	const bloggerId = +req.params.id;
 	const blogger = await bloggersService.getBloggerById(bloggerId);
 	if (!blogger) {
-		res.status(400).json(
+		res.status(404).json(
 			{
 				errorsMessages: [
 					{
