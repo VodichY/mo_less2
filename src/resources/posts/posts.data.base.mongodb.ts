@@ -12,13 +12,13 @@ const createPost = async (post: IPost, blogger: IBlogger) => {
 };
 
 const getPosts = async (params: {[key: string]: string}) => {
-	const searchNameTerm = params.SearchNameTerm || "";
 	const pageNumber = +params.PageNumber || 1;
 	const pageSize = +params.PageSize || 10;
 	const database = clientMongoDb.db('mo_less2');
 	const postsCollection = database.collection('posts');
 	const query = {};
-	const posts = await postsCollection.find(query).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray() as IPost[];
+	const options = {};
+	const posts = await postsCollection.find(query, options).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray() as IPost[];
 	const postsCount = await postsCollection.countDocuments(query);
 	const pagesCount = Math.ceil(postsCount / pageSize);
 	return { posts , postsCount, pagesCount, pageNumber, pageSize };
@@ -35,6 +35,20 @@ const getPostById = async (postId: number) => {
 		return post;
 	}
 	return false;
+};
+
+const getPostByBloggerId = async (params: {[key: string]: string}) => {
+	const bloggerId = +params.bloggerId;
+	const pageNumber = +params.PageNumber || 1;
+	const pageSize = +params.PageSize || 10;
+	const database = clientMongoDb.db('mo_less2');
+	const postsCollection = database.collection('posts');
+	const query = { bloggerId: bloggerId };
+	const options = {};
+	const posts = await postsCollection.find(query, options).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray() as IPost[];
+	const postsCount = await postsCollection.countDocuments(query);
+	const pagesCount = Math.ceil(postsCount / pageSize);
+	return { posts , postsCount, pagesCount, pageNumber, pageSize };
 };
 
 const updatePostById = async ( post: IPost, postId: number ) => {
@@ -69,5 +83,6 @@ export {
 	getPosts, 
 	getPostById,
 	updatePostById, 
-	deletePostById 
+	deletePostById,
+	getPostByBloggerId 
 };

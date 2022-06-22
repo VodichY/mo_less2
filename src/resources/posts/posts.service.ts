@@ -14,6 +14,9 @@ const getPostById = async (postId: number) => {
 	return await postsDataBase.getPostById(postId);
 }
 
+const getPostByBloggerId = async (params: {[key: string]: string}) => {
+	return await postsDataBase.getPostByBloggerId(params);
+}
 
 const updatePostById = async (post: IPost, postId: number) => {
 	return await postsDataBase.updatePostById(post, postId);
@@ -29,6 +32,7 @@ export {
 	getPosts,
 	getPostById,
 	updatePostById,
-	deletePostById
+	deletePostById,
+	getPostByBloggerId
 };
 

@@ -1,6 +1,8 @@
 import { Request, Response, Router } from 'express';
 import * as bloggersService from "./bloggers.service";
+import * as postsService from "../posts/posts.service";
 import { Blogger } from "./bloggers.model";
+import { Post } from "../posts/posts.model";
 import { validateBloggersInputModel, validateHandler } from "../../common/validate";
 import { checkAuthorization } from "../../common/authorization";
 
@@ -26,6 +28,13 @@ router.route("/:id").get(async (req: Request, res: Response) => {
 	} else {
 		res.status(404).send('blogger not found');
 	}
+});
+
+router.route("/:id/posts").get(async (req: Request, res: Response) => {
+	const { PageNumber, PageSize } = req.query;
+	const bloggerId = req.params.id;
+	const result = await postsService.getPostByBloggerId({ bloggerId, PageNumber, PageSize } as { [key: string]: string });
+	res.status(200).json(Post.pagination(result)); 
 });
 
 router.route("/:id").put(checkAuthorization, validateBloggersInputModel, validateHandler, async (req: Request, res: Response) => {
