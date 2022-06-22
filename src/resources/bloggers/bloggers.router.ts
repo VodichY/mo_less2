@@ -3,7 +3,7 @@ import * as bloggersService from "./bloggers.service";
 import * as postsService from "../posts/posts.service";
 import { Blogger } from "./bloggers.model";
 import { Post } from "../posts/posts.model";
-import { validateBloggersInputModel, validateHandler } from "../../common/validate";
+import { validateBloggersInputModel, validatePostInputModel, validateHandler } from "../../common/validate";
 import { checkAuthorization } from "../../common/authorization";
 
 const router = Router();
@@ -52,7 +52,7 @@ router.route("/:id/posts").get(async (req: Request, res: Response) => {
 	res.status(200).json(Post.pagination(result)); 
 });
 
-router.route("/:id/posts").post(async (req: Request, res: Response) => {
+router.route("/:id/posts").post(checkAuthorization, validatePostInputModel, validateHandler, async (req: Request, res: Response) => {
 	const bloggerId = +req.params.id;
 	const blogger = await bloggersService.getBloggerById(bloggerId);
 	if (!blogger) {
