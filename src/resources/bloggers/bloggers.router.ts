@@ -33,15 +33,51 @@ router.route("/:id").get(async (req: Request, res: Response) => {
 router.route("/:id/posts").get(async (req: Request, res: Response) => {
 	const { PageNumber, PageSize } = req.query;
 	const bloggerId = req.params.id;
-	
 	const blogger = await bloggersService.getBloggerById(+bloggerId);
 	if (!blogger) {
-		res.status(404).send('blogger not found');
+		res.status(400).json(
+			{
+				errorsMessages: [
+					{
+						message: "Invalid 'bloggerId': such blogger doesn't exist",
+						field: "bloggerId"
+					}
+				]
+			}
+		);
 		return;
 	}
 
 	const result = await postsService.getPostByBloggerId({ bloggerId, PageNumber, PageSize } as { [key: string]: string });
 	res.status(200).json(Post.pagination(result)); 
+});
+
+router.route("/:id/posts").post(async (req: Request, res: Response) => {
+	const bloggerId = +req.params.id;
+	const blogger = await bloggersService.getBloggerById(bloggerId);
+	if (!blogger) {
+		res.status(400).json(
+			{
+				errorsMessages: [
+					{
+						message: "Invalid 'bloggerId': such blogger doesn't exist",
+						field: "bloggerId"
+					}
+				]
+			}
+		);
+		return;
+	}
+
+	const post = await postsService.createPost(
+		{
+			title: req.body.title,
+			shortDescription: req.body.shortDescription,
+			content: req.body.content,
+			bloggerId: bloggerId
+		}, blogger);
+			
+	res.status(201).json(Post.toResponse(post)); 
 });
 
 router.route("/:id").put(checkAuthorization, validateBloggersInputModel, validateHandler, async (req: Request, res: Response) => {
